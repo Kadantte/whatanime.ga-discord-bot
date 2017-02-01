@@ -1,0 +1,25 @@
+{
+  "name": "whatanime.ga-discord-bot",
+  "version": "0.0.8",
+  "description": "A discord bot using whatnaime.ga api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zman840/whatanime.ga-discord-bot.git"
+  },
+  "author": "Zakrya Rohman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zman840/whatanime.ga-discord-bot/issues"
+  },
+  "homepage": "https://github.com/Zman840/whatanime.ga-discord-bot#readme",
+  "dependencies": {
+    "datauri": "^1.0.5",
+    "discord.js": "^11.0.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  }
+}

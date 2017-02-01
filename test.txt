@@ -1,0 +1,39 @@
+client is ready and is now connected
+[ MessageEmbed {
+    message: 
+     Message {
+       channel: [Object],
+       id: '276240933702467584',
+       type: 'DEFAULT',
+       content: 'http://imgur.com/GrshMJC',
+       author: [Object],
+       member: [Object],
+       pinned: false,
+       tts: false,
+       nonce: undefined,
+       system: false,
+       embeds: [Circular],
+       attachments: [Object],
+       createdTimestamp: 1485931370903,
+       editedTimestamp: null,
+       mentions: [Object],
+       _edits: [],
+       reactions: [Object],
+       webhookID: null },
+    type: 'video',
+    title: 'Imgur: The most awesome images on the Internet',
+    description: 'Imgur: The most awesome images on the Internet.',
+    url: 'http://imgur.com/GrshMJC',
+    color: undefined,
+    fields: [],
+    createdTimestamp: undefined,
+    thumbnail: 
+     MessageEmbedThumbnail {
+       embed: [Circular],
+       url: 'http://i.imgur.com/GrshMJC.png?fb',
+       proxyURL: 'https://images-ext-1.discordapp.net/eyJ1cmwiOiJodHRwOi8vaS5pbWd1ci5jb20vR3JzaE1KQy5wbmc_ZmIifQ.vTERbrowPI6UO8k79Mx9uGAJ3Fs',
+       height: 315,
+       width: 600 },
+    author: null,
+    provider: MessageEmbedProvider { embed: [Circular], name: 'Imgur', url: 'https://imgur.com' },
+    footer: null } ]
