@@ -20,6 +20,7 @@
     "datauri": "^1.0.5",
     "discord.js": "^11.0.0",
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "sharp": "^0.17.1"
   }
 }
