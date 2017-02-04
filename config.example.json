@@ -1,5 +1,8 @@
 {
 	"discordPrefix": "",
 	"discordToken": "",
-	"whatanimeToken": ""
+	"whatanime": {
+		"token": "",
+		"limit": ""
+	}
 }

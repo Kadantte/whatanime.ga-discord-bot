@@ -9,11 +9,27 @@ const whatanimeEndpoint = 'https://whatanime.ga/';
 const temp = './tempImage';
 const tempUpdated = './tempImageUpdated'
 
-// TODO: header check function to prevent unnecessarily large files over X MB
+/**
+ * Prechecks filesize to a limit of 5MB by default. Can be modified by configs
+ * @param {Object} obj 'Object containing an image file and '
+ */
+ function checkSize(imageURL, api, size) {
+   return new Promise((result, reject) => {
+     const maxSize = size || 1024 * 1024 * 5;
+     request.head('https://i.imgur.com/815qVMA.png', (err, res, body) => {
+       if (err) throw err;
+       if (res.headers['content-length'] < maxSize) {
+         result({imageURL, api});
+       } else {
+         reject('Filesize too big to download');
+       }
+     })
+   })
+ }
 
 /**
  * Reduces filesize to maneagable levels
- * @param {Object} obj 'Object containing an imag file location and apie
+ * @param {Object} obj 'Object containing an image file location and apie
  * @return {Promise}'
  */
 function reduceSize(obj) {
@@ -29,7 +45,7 @@ function reduceSize(obj) {
         if (err) throw err;
         setTimeout(() => {
           fs.unlink(obj.imageFile, (err) => {
-            if (err) console.log('could not delete file'); // TODO Consider actual error instead
+            if (err) console.log('Could not delete file'); // TODO Consider actual error instead
           });
         }, 1000)
         result({imageFile: file, api: obj.api})
@@ -43,7 +59,9 @@ function reduceSize(obj) {
  * @param  {String} imageURL 'Image URL'
  * @return {Promise}         'Temporary file save location if successful'
  */
-function downloadImage(imageURL, api) {
+function downloadImage(obj) {
+  const imageURL = obj.imageURL;
+  const api = obj.api;
   return new Promise((res, rej) => {
     const file = `${temp}${Date.now()}.jpg`;
     // TODO double check if file extensions are necessary to use when uploading in wahatanime
@@ -77,7 +95,7 @@ function animeSearch(obj) {
         (err, res, body) => {
         setTimeout(() => {
           fs.unlink(obj.imageFile, (err) => {
-              if (err) console.log('could not delete file'); // TODO Consider actual error
+              if (err) console.log('Could not delete file'); // TODO Consider actual error
             });
           }, 1000)
           if (err) reject(err)
@@ -97,8 +115,9 @@ function animeSearch(obj) {
 }
 
 class whatanime {
-  constructor(api) {
-    this.api = api;
+  constructor(config) {
+    this.token = config.token;
+    this.size = config.size * 1024 || null;
     this.whatanime = 'https://whatanime.ga/';
   }
 
@@ -120,7 +139,8 @@ class whatanime {
    */
   findAnime(imageURL) {
     // TODO create image search
-    return downloadImage(imageURL, this.api)
+    return checkSize(imageURL, this.token, this.size)
+    .then(downloadImage)
     .then(reduceSize)
     .then(animeSearch);
   }

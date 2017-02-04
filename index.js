@@ -4,7 +4,7 @@ const client = new discord.Client();
 const configs = require('./config.json');
 
 const whatanime = require('./whatanime/');
-const whatClient = new whatanime(configs.whatanimeToken);
+const whatClient = new whatanime(configs.whatanime);
 
 const commands = ['Whatanime'];
 
@@ -233,4 +233,4 @@ client.on('messageUpdate', (oldmsg, newmsg) => {
   }
 });
 
-client.login(configs.discordToken)
+client.login(configs.discordToken);
