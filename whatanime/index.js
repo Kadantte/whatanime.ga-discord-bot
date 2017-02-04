@@ -1,6 +1,5 @@
 'use strict';
 const request = require('request');
-const requestP = require('request-promise'); // TODO delete since unneecsssary in the future
 const sharp = require('sharp');;
 const querystring = require('querystring');
 const fs = require('fs');
@@ -13,13 +12,13 @@ const tempUpdated = './tempImageUpdated'
  * Prechecks filesize to a limit of 5MB by default. Can be modified by configs
  * @param {Object} obj 'Object containing an image file and '
  */
- function checkSize(imageURL, api, size) {
+ function checkSize(imageURL, token, size) {
    return new Promise((result, reject) => {
      const maxSize = size || 1024 * 1024 * 5;
      request.head('https://i.imgur.com/815qVMA.png', (err, res, body) => {
        if (err) throw err;
        if (res.headers['content-length'] < maxSize) {
-         result({imageURL, api});
+         result({imageURL, token});
        } else {
          reject('Filesize too big to download');
        }
@@ -48,7 +47,7 @@ function reduceSize(obj) {
             if (err) console.log('Could not delete file'); // TODO Consider actual error instead
           });
         }, 1000)
-        result({imageFile: file, api: obj.api})
+        result({imageFile: file, token: obj.token})
       })
     }, 3000) // HACK: Delay time to process image. Started to have issues post 1MB
   })
@@ -61,11 +60,11 @@ function reduceSize(obj) {
  */
 function downloadImage(obj) {
   const imageURL = obj.imageURL;
-  const api = obj.api;
+  const token = obj.token;
   return new Promise((res, rej) => {
     const file = `${temp}${Date.now()}.jpg`;
     // TODO double check if file extensions are necessary to use when uploading in wahatanime
-    request(imageURL).pipe(fs.createWriteStream(file)).on('close', res({imageFile: file, api}));
+    request(imageURL).pipe(fs.createWriteStream(file)).on('close', res({imageFile: file, token}));
   })
 }
 
@@ -88,7 +87,7 @@ function animeSearch(obj) {
             'Content-Length': contentLength,
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          uri: `${whatanimeEndpoint}/api/search?token=${obj.api}`,
+          uri: `${whatanimeEndpoint}/api/search?token=${obj.token}`,
           body: formData,
           method: 'POST'
         },
@@ -119,16 +118,12 @@ class whatanime {
     this.token = config.token;
     this.size = config.size * 1024 || null;
     this.whatanime = 'https://whatanime.ga/';
-  }
-
-  /**
-   * Returns userinfo name and id
-   * https://soruly.github.io/whatanime.ga/#/?id=me
-   * @return {Promise} "JSON promise to chain by"
-   */
-  get user() {
-
-    return requestP(`${this.whatanime}/api/me?token=${this.api}`);
+    
+    request(`${this.whatanime}/api/me?token=${this.token}`, (err, res, body) => {
+      // console.log(body);
+      if (err) throw err;
+      this.user = body;
+    })
   }
 
   /**

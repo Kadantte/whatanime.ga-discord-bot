@@ -205,7 +205,6 @@ function activateCommand(obj) {
 
 client.on('ready', () => {
   console.log('client is ready and is now connected');
-  // client.destroy(); // XXX: Temp code for specific testing purposes
 })
 
 client.on('message', (msg) => {
@@ -214,7 +213,7 @@ client.on('message', (msg) => {
    * [X] Command Check
    * [X] Download file if embed, checking the embed array (message.embeds > 0, embedItem.url, embItem.type = image) if it's an image that's downloadable and the URL to do so
    * [X] use whatanime api and upload file to find and respond
-   * [ ] return and check validation for any found animes, top 3 results
+   * [ ] return and check validation for any found animes, top 1 results
    * 5) respectively link using anilist.co / mal / some anime site api for easier response
    */
   confirmPrefix(msg, msg.cleanContent)
